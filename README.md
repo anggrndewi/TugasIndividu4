@@ -25,4 +25,8 @@
 - import [file ini](https://github.com/anggrndewi/TugasIndividu4/blob/main/pyramid-tugasmovie.sql) ke localhost sql
 - jalankan project dengan python app.py atau py app.py
 
+## Route dalam project ini
+- http://localhost:6543/ untuk halaman login
+- http://localhost:6543/movie untuk ke halaman movie
+
 ## Dewi Anggraini - 120140149
