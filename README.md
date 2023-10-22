@@ -22,7 +22,7 @@
 - pip install pyramid_jwt
 - pip install jwt
 - pip install pymysql
-- import [file](https://github.com/anggrndewi/TugasIndividu4/blob/main/pyramid-tugasmovie.sql)ke localhost sql
+- import [file ini](https://github.com/anggrndewi/TugasIndividu4/blob/main/pyramid-tugasmovie.sql) ke localhost sql
 - jalankan project dengan python app.py atau py app.py
 
 ## Dewi Anggraini - 120140149
