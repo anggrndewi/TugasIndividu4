@@ -19,10 +19,9 @@
       <div class="col-md-4 mb-3">
         <div class="card">
           <div class="card-body">
-            <h1>{{ movie.title }}</h1>
-            <p class="card-text">{{ movie.desk }}</p>
-             <a href="#" class="btn btn-primary">Edit</a>
-             <a href="#" class="btn btn-primary">Delete</a>
+            <h1>{{ movie_data.title }}</h1>
+            <p class="card-text">{{ movie_data.desk }}</p>
+             <a href="{{ url_for('edit_movie', movie_id=movie.id_movie) }}" class="btn btn-primary">Edit</a>
           </div>
         </div>
       </div>

@@ -158,6 +158,26 @@ def movie(request):
         data = cursor.fetchall()
         return {'data': data}
 
+# Route untuk halaman edit movie
+@view_config(route_name='edit_movie', renderer='views/edit_movie.jinja2')
+def edit_movie(request):
+    id_movie = request.matchdict.get('id_movie')  # Ambil id_movie dari parameter URL
+
+    with connection.cursor() as cursor:
+        # Ambil data film berdasarkan id_movie
+        sql = "SELECT * FROM movie WHERE id_movie = %s"
+        cursor.execute(sql, (id_movie,))
+        movie_data = cursor.fetchone()
+
+    if not movie_data:
+        # Menangani jika id_movie tidak ditemukan
+        return HTTPNotFound("Film tidak ditemukan")
+
+    # Proses data film untuk ditampilkan dalam form edit
+    # Misalnya, mengisi nilai awal form dengan data film yang ada
+
+    return {'movie_data': movie_data}
+
 # Konfigurasi Pyramid
 if __name__ == "__main__":
     with Configurator() as config:
@@ -168,6 +188,8 @@ if __name__ == "__main__":
         config.add_route('page_login', '/')
         config.add_route('login', '/api/login')
         config.add_route('movie', '/movie')
+        config.add_route('edit_movie', '/edit_movie/{id_movie}')
+        config.add_route('delete_movie', '/delete_movie/{id_movie}')
         config.scan()
         config.set_authorization_policy(ACLAuthorizationPolicy())
         config.include('pyramid_jwt')
