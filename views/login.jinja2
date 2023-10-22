@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <title>120140149</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="login">
+        <h1>Login</h1>
+        <form id="page-login">
+            <label for="username">Username:</label>
+            <input placeholder="Your Username" type="text" id="username" name="username" required><br><br>
+            <label for="password">Password:</label>
+            <input placeholder="Your Password" type="password" id="password" name="password" required><br><br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div class="right">
+            <img src="static/slide-3.jpg" alt="Login">
+    </div>
+</div>
+</body>
+<script>
+    document.getElementById('page-login').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        // Data akan dikirim sebagai JSON
+        var jsonData = {
+            username: username,
+            password: password
+        };
+
+        // Kirim permintaan asinkron ke titik akhir /api/login menggunakan Fetch API
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === 'ok') {
+                // Simpan token JWT di penyimpanan lokal
+                localStorage.setItem('token', data.token);
+                
+                // Simpan token penyegaran dalam cookie HttpOnly
+                document.cookie = `refreshToken=${data.refresh_token}; HttpOnly; Secure; SameSite=Strict`;
+
+                // Sertakan token JWT di header Otorisasi untuk permintaan beranda
+                return fetch('/beranda', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+            } else {
+                throw new Error('Login failed. Please check your credentials.');
+            }
+        })
+        .then(response => response.json())
+        .then(berandaData => {
+            if (berandaData.greet === 'Beranda') {
+                // Menangani permintaan yang berhasil
+                alert('Beranda, ' + berandaData.name + '!');
+            } else {
+                throw new Error('Unauthorized: ' + berandaData.error);
+            }
+        })
+        .catch(error => {
+            // Menangani permintaan login yang gagal
+            alert(error.message);
+        });
+    });
+</script>
+</html>
